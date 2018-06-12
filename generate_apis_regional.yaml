@@ -1,10 +1,10 @@
 imports:
-- path: kubernetes_engine.py
+- path: kubernetes_engine_regional_cluster.py
 - path: kubernetes_engine_apis.py
 
 resources:
 - name: cluster
-  type: kubernetes_engine.py
+  type: kubernetes_engine_regional_cluster.py
   properties:
     CLUSTER_NAME: [[YOUR-CLUSTER-NAME]]
     CLUSTER_ZONE: [[YOUR-CLUSTER-ZONE]]

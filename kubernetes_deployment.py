@@ -3,8 +3,8 @@ def GenerateConfig(context):
 
   cluster_types_root = '{}/kubernetes'.format(context.env['project'])
   cluster_types = {
-      'Service': '{}:/api/v1/namespaces/{{namespace}}/services'.format(cluster_types_root),
-      'Deployment': '{}-apps:/apis/apps/v1beta1/namespaces/{{namespace}}/deployments'.format(cluster_types_root)
+      'Service': '{}-v1:/api/v1/namespaces/{{namespace}}/services'.format(cluster_types_root),
+      'Deployment': '{}-v1beta1-apps:/apis/apps/v1beta1/namespaces/{{namespace}}/deployments'.format(cluster_types_root)
   }
 
   name = context.properties['name']
@@ -12,31 +12,6 @@ def GenerateConfig(context):
   port = context.properties['port']
 
   resources = [{
-      'name': name + '-service',
-      'type': cluster_types['Service'],
-      'properties': {
-          'apiVersion': 'v1',
-          'kind': 'Service',
-          'namespace': 'default',
-          'metadata': {
-              'name': name + '-service',
-              'labels': {
-                  'id': 'deployment-manager'
-              }
-          },
-          'spec': {
-              'type': 'NodePort',
-              'ports': [{
-                  'port': port,
-                  'targetPort': port,
-                  'protocol': 'TCP'
-              }],
-              'selector': {
-                  'app': name
-              }
-          }
-      }
-  }, {
       'name': name + '-deployment',
       'type': cluster_types['Deployment'],
       'properties': {
@@ -64,6 +39,31 @@ def GenerateConfig(context):
                           }]
                       }]
                   }
+              }
+          }
+      }
+  }, {
+      'name': name + '-service',
+      'type': cluster_types['Service'],
+      'properties': {
+          'apiVersion': 'v1',
+          'kind': 'Service',
+          'namespace': 'default',
+          'metadata': {
+              'name': name + '-service',
+              'labels': {
+                  'id': 'deployment-manager'
+              }
+          },
+          'spec': {
+              'type': 'NodePort',
+              'ports': [{
+                  'port': port,
+                  'targetPort': port,
+                  'protocol': 'TCP'
+              }],
+              'selector': {
+                  'app': name
               }
           }
       }

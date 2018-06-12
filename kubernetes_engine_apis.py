@@ -2,8 +2,8 @@ def GenerateConfig(context):
   """Generate YAML resource configuration."""
 
   endpoints = {
-      '': 'api/v1',
-      '-apps': 'apis/apps/v1beta1',
+      '-v1': 'api/v1',
+      '-v1beta1-apps': 'apis/apps/v1beta1',
       '-v1beta1-extensions': 'apis/extensions/v1beta1'
   }
 
