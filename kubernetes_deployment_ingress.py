@@ -13,22 +13,21 @@ def GenerateConfig(context):
   port = context.properties['port']
 
   resources = [{
-      'name': name + '-deployment',
+      'name': 'deployment',
       'type': cluster_types['Deployment'],
       'properties': {
           'apiVersion': 'apps/v1beta1',
           'kind': 'Deployment',
           'namespace': 'default',
           'metadata': {
-              'name': name + '-deployment'
+              'name': name
           },
           'spec': {
               'replicas': 1,
               'template': {
                   'metadata': {
                       'labels': {
-                          'name': name + '-deployment',
-                          'app': name
+                          'name': name
                       }
                   },
                   'spec': {
@@ -44,14 +43,14 @@ def GenerateConfig(context):
           }
       }
   }, {
-      'name': name + '-service',
+      'name': 'service',
       'type': cluster_types['Service'],
       'properties': {
           'apiVersion': 'v1',
           'kind': 'Service',
           'namespace': 'default',
           'metadata': {
-              'name': name + '-service',
+              'name': name,
               'labels': {
                   'id': 'deployment-manager'
               }
@@ -64,23 +63,23 @@ def GenerateConfig(context):
                   'protocol': 'TCP'
               }],
               'selector': {
-                  'app': name
+                  'name': name
               }
           }
       }
   }, {
-      'name': name + '-ingress',
+      'name': 'ingress',
       'type': cluster_types['Ingress'],
       'properties': {
           'apiVersion': 'extensions/v1beta1',
           'kind': 'Ingress',
           'namespace': 'default',
           'metadata': {
-              'name': name + '-ingress'
+              'name': name
           },
           'spec': {
               'backend': {
-                  'serviceName': name + '-service',
+                  'serviceName': name,
                   'servicePort': port,
               }
           }
